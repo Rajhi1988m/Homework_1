@@ -1,28 +1,8 @@
 from TokenClass import *
 from OperatorNode import *
-
-
 from LexerClass import LexerClass
-
 from ParserClass import ParserClass
-
-
-
-
-
-
-
-
-#############################
-
-class ASTNodeVisitorClass(object):
-    def func_visit(self, node):
-        method_name = 'func_visit_' + type(node).__name__
-        visitor = getattr(self, method_name, self.func_generic_visit)
-        return visitor(node)
-
-    def func_generic_visit(self, node):
-        raise Exception('No visit_{} method'.format(type(node).__name__))
+from ASTNodeVisitorClass import *
 
 
 class InterpreterClass(ASTNodeVisitorClass):
@@ -48,7 +28,6 @@ class InterpreterClass(ASTNodeVisitorClass):
         self.GLOBAL_TABLE[var_name] = self.func_visit(node.right)
 
     def func_visit_BooleanNode(self, node):
-        # print('visit_Boolean')
         if node.op.type == EQUAL:
             return self.func_visit(node.left) == self.func_visit(node.right)
         elif node.op.type == LESSTHAN:
@@ -121,19 +100,20 @@ def main():
     while True:
         try:
             try:
-                text = raw_input('')
-            except NameError:  
-                text = input('')
-        except EOFError:
+                the_next_test = raw_input('')
+            except NameError as error:  
+                the_next_test = input('')
+        except EOFError as error:
             break
-        if not text:
+        if not the_next_test:
             continue
+            
+    the_lexer_identitfier = LexerClass(the_next_test)
+    the_parser_identitfier = ParserClass(the_lexer_identitfier)
+    interpreter = InterpreterClass(the_parser_identitfier)
+    resuLESSTHAN = interpreter.func_interpret()
+    print(resuLESSTHAN)
 
-        lexer = LexerClass(text)
-        parser = ParserClass(lexer)
-        interpreter = InterpreterClass(parser)
-        resuLESSTHAN = interpreter.func_interpret()
-        print(resuLESSTHAN)
 
 
 if __name__ == '__main__':
