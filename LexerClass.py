@@ -3,8 +3,8 @@ WHILE, DO, IF, THEN, ELSE, SKIP, ID, INTEGER, TRUE, FALSE, NOT, PLUS, MINUS, MUL
     'WHILE', 'DO', 'IF', 'THEN', 'ELSE', 'SKIP', 'ID', 'INTEGER', 'TRUE', 'FALSE', 'NOT', 'PLUS', 'MINUS', 'MULESSTHANIPLY', 'DEVIDE', '∧', '∨', '(', ')', ':=', '=', '>', '<', '{', '}', 'SEMI',  'EOF'
 )
 class LexerClass(object):
-    def __init__(self, text):
-        self.tokens = text.split(' ')
+    def __init__(self, the_next_test):
+        self.tokens = the_next_test.split(' ')
         self.location = 0
         self.token = self.tokens[self.location]
 
@@ -14,7 +14,7 @@ class LexerClass(object):
     def move_next(self):
         self.location += 1
         if self.location > len(self.tokens) - 1:
-            self.token = None  # Indicates end of input
+            self.token = None  
         else:
             self.token = self.tokens[self.location]
 
